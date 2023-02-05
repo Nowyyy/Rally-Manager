@@ -1,0 +1,515 @@
+-- file: menu.gui_script
+
+local druid = require("druid.druid")
+
+-- Creation of methods
+local circle_wallpaper1_2 = nil
+local circle_wallpaper2_3 = nil
+local circle_wallpaper3_4 = nil
+local circle_wallpaper4_5 = nil
+local circle_wallpaper5_6 = nil
+local circle_wallpaper6_1 = nil
+local circle_wallpaper = nil
+
+-- Creation of global variables
+local var_credits_on = 0
+local var_options_on = 0
+
+
+-------------------------------------------------  INTRO PART  ------------------------------------------------- 
+
+
+-- Hide the novensstudio logo
+local function anim2_novensstudio(self, node)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, 3)
+end
+
+-- Show the novensstudio logo
+local function anim1_novensstudio(node, d)
+	gui.animate(node, gui.PROP_COLOR, color_visible, gui.EASING_OUTQUAD, 0.5, d, anim2_novensstudio)
+end
+
+-- Hide the defold logo
+local function anim2_defold_logo(self, node)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, 2)
+end
+
+-- Show the defold logo
+local function anim1_defold_logo(node, d, d2)
+	gui.animate(node, gui.PROP_COLOR, color_visible, gui.EASING_OUTQUAD, 0.5, d, anim2_defold_logo)
+end
+
+-- Fade in node
+local function anim_fadein(node, d, color)
+	gui.animate(node, gui.PROP_COLOR, color, gui.EASING_OUTQUAD, 0.5, d)
+end
+
+-- Fade out node
+local function anim_fadeout(node, d)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, d)
+end
+
+-- Hide every elements on the scene
+local function hide_everything()
+	gui.set_color(node_background1, color_invisible)
+	gui.set_color(node_background2, color_invisible)
+	gui.set_color(node_background3, color_invisible)
+	gui.set_color(node_background4, color_invisible)
+	gui.set_color(node_background5, color_invisible)
+	gui.set_color(node_background6, color_invisible)
+
+	gui.set_color(node_text_title, color_invisible)
+	gui.set_color(node_text_play, color_invisible)
+	gui.set_color(node_text_options, color_invisible)
+	gui.set_color(node_text_credits, color_invisible)
+	gui.set_color(node_text_quit, color_invisible)
+	gui.set_color(node_text_version, color_invisible)
+
+	gui.set_color(node_text_options_fullscreen, color_invisible)
+	gui.set_color(node_text_options_volume, color_invisible)
+	gui.set_color(node_text_options_language, color_invisible)
+
+	gui.set_color(node_text_credits_text, color_invisible)
+	gui.set_color(node_text_credits_text_blue, color_invisible)
+
+	gui.set_color(node_logo_novensstudio, color_invisible)
+	gui.set_color(node_logo_defold, color_invisible)
+	gui.set_color(node_logo_credits_novensstudio, color_invisible)
+
+	gui.set_color(node_hover_play, color_invisible)
+	gui.set_color(node_hover_options, color_invisible)
+	gui.set_color(node_hover_quit, color_invisible)
+	gui.set_color(node_hover_credits, color_invisible)
+	
+	gui.set_color(node_hover_options_fullscreen, color_invisible)
+	gui.set_color(node_hover_options_volume, color_invisible)
+	gui.set_color(node_hover_options_language, color_invisible)
+
+	gui.set_color(node_ui_leftbar, color_invisible)
+	gui.set_color(node_ui_shadeblack, color_invisible)
+end
+
+
+-------------------------------------------------  WALLPAPERS PART  ------------------------------------------------- 
+
+-- Fade out the shade of background
+local function fade_out_shade_background()
+	anim_fadeout(node_ui_shadeblack, 0)
+end
+
+-- Fade in the shade of background
+local function fade_in_shade_background()
+	anim_fadein(node_ui_shadeblack, 0, color_ui_shadeblack)
+end
+
+-- Circle from wallpaper 6 to wallpaper 1
+function circle_wallpaper6_1(obj, handle, elapsed)
+	anim_fadeout(node_background6, 0)
+	anim_fadein(node_background1, 0, color_visible)
+	wallpaperactif = 1
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 5 to wallpaper 6
+function circle_wallpaper5_6(obj, handle, elapsed)
+	anim_fadeout(node_background5, 0)
+	anim_fadein(node_background6, 0, color_visible)
+	wallpaperactif = 6
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 4 to wallpaper 5
+function circle_wallpaper4_5(obj, handle, elapsed)
+	anim_fadeout(node_background4, 0)
+	anim_fadein(node_background5, 0, color_visible)
+	wallpaperactif = 5
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 3 to wallpaper 4
+function circle_wallpaper3_4(obj, handle, elapsed)
+	anim_fadeout(node_background3, 0)
+	anim_fadein(node_background4, 0, color_visible)
+	wallpaperactif = 4
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 2 to wallpaper 3
+function circle_wallpaper2_3(obj, handle, elapsed)
+
+	anim_fadeout(node_background2, 0)
+	anim_fadein(node_background3, 0, color_visible)
+	wallpaperactif = 3
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 1 to wallpaper 2
+function circle_wallpaper1_2(obj, handle, elapsed)
+	anim_fadeout(node_background1, 0)
+	anim_fadein(node_background2, 0, color_visible)
+	wallpaperactif = 2
+	circle_wallpaper()
+end
+
+-- Call every method to circle wallpapers
+function circle_wallpaper()
+	if wallpaperactif == 1 then
+		timer.delay(8, false, circle_wallpaper1_2)
+	end
+	if wallpaperactif == 2 then
+		timer.delay(8, false, circle_wallpaper2_3)
+	end
+	if wallpaperactif == 3 then
+		timer.delay(8, false, circle_wallpaper3_4)
+	end
+	if wallpaperactif == 4 then
+		timer.delay(8, false, circle_wallpaper4_5)
+	end
+	if wallpaperactif == 5 then
+		timer.delay(8, false, circle_wallpaper5_6)
+	end
+	if wallpaperactif == 6 then
+		timer.delay(8, false, circle_wallpaper6_1)
+	end
+end
+
+
+-------------------------------------------------  SOUND PART  ------------------------------------------------- 
+
+
+-- Launch the menu music on repete
+local function play_menu_music_on_repeat(obj, handle, elapsed)
+	sound.stop("mainmenu#sound_mainmenu_repete")
+	sound.play("mainmenu#sound_mainmenu_repete")
+	timer.delay(70, true, play_menu_music_on_repeat)
+end
+
+-- Launch the menu music
+local function play_menu_music(obj, handle, elapsed)
+	sound.play("mainmenu#sound_mainmenu_repete")
+	timer.delay(70, true, play_menu_music_on_repeat)
+end
+
+
+-------------------------------------------------  OPTIONS PART  ------------------------------------------------- 
+
+-- Launch of options
+local function button_launch_options(self)
+	fullscreen_checkbox:set_state(self, true)
+	
+	gui.set_enabled(node_hover_options_fullscreen, true)
+	gui.set_enabled(node_hover_options_volume, true)
+	gui.set_enabled(node_hover_options_language, true)
+	gui.set_enabled(node_checkbox_fullscreen, true)
+	gui.set_enabled(node_checkbox_fullscreen2, true)
+
+	
+	anim_fadein(node_hover_options_fullscreen, 0, color_hover_options_fullscreen)
+	anim_fadein(node_text_options_fullscreen, 0, color_visible)
+
+	anim_fadein(node_hover_options_volume, 0, color_hover_options_volume)
+	anim_fadein(node_text_options_volume, 0, color_visible)
+
+	anim_fadein(node_hover_options_language, 0, color_hover_options_language)
+	anim_fadein(node_text_options_language, 0, color_visible)
+	
+	var_options_on = 1
+end
+
+-- Close of options
+local function button_quit_options()
+	gui.set_enabled(node_hover_options_fullscreen, false)
+	gui.set_enabled(node_hover_options_volume, false)
+	gui.set_enabled(node_hover_options_language, false)
+	gui.set_enabled(node_checkbox_fullscreen, false)
+	gui.set_enabled(node_checkbox_fullscreen2, false)
+	
+	anim_fadeout(node_hover_options_fullscreen, 0)
+	anim_fadeout(node_text_options_fullscreen, 0)
+
+	anim_fadeout(node_hover_options_volume, 0)
+	anim_fadeout(node_text_options_volume, 0)
+
+	anim_fadeout(node_hover_options_language, 0)
+	anim_fadeout(node_text_options_language, 0)
+	var_options_on = 0
+end
+
+
+-------------------------------------------------  CREDITS PART  ------------------------------------------------- 
+
+
+-- Launch of credits 
+local function button_launch_credits()
+	anim_fadein(node_ui_shadeblack, 0, color_ui_shadeblack)
+	anim_fadein(node_logo_credits_novensstudio, 0, color_visible)
+	anim_fadein(node_text_credits_text, 0, color_visible)
+	anim_fadein(node_text_credits_text_blue, 0, color_text_credits_text_blue)
+	var_credits_on = 1
+end
+
+-- Close of credits
+local function button_quit_credits()
+	anim_fadeout(node_logo_credits_novensstudio, 0)
+	anim_fadeout(node_text_credits_text, 0)
+	anim_fadeout(node_text_credits_text_blue, 0)
+	var_credits_on = 0
+end
+
+-------------------------------------------------  BUTTONS PART  ------------------------------------------------- 
+
+
+-- Actions for buttons
+function on_input(self, action_id, action)
+	
+	-- Manage closing the game with quit button
+	if(action_id == hash("touch") and action.pressed == true) then
+
+		-- Button play
+		if(gui.pick_node(node_hover_play,action.x,action.y)) then
+			sound.play("mainmenu#sound_mainmenu_click")
+		end
+
+		-- Button option
+		if(gui.pick_node(node_hover_options,action.x,action.y)) then
+			sound.play("mainmenu#sound_mainmenu_click")
+
+			if var_credits_on == 1 then
+				button_quit_credits()
+			end
+
+			if var_options_on == 0 then
+				fade_in_shade_background()
+				button_launch_options(self)
+			else
+				button_quit_options()
+				fade_out_shade_background()
+			end	
+		end
+
+		-- Button credits
+		if(gui.pick_node(node_hover_credits,action.x,action.y)) then
+			sound.play("mainmenu#sound_mainmenu_click")
+
+			if var_options_on == 1 then
+				button_quit_options()
+			end
+
+			if var_credits_on == 0 then
+				fade_in_shade_background()
+				button_launch_credits()
+			else
+				button_quit_credits()
+				fade_out_shade_background()
+			end
+			
+		end
+
+		-- Button quit
+		if(gui.pick_node(node_hover_quit,action.x,action.y)) then
+			sound.play("mainmenu#sound_mainmenu_click")
+			msg.post("@system:", "exit", {code = 0})
+		end
+	end
+
+	-- Manage buttons hover on the menu
+	if action_id == nil then
+
+		-- Button play
+		if gui.pick_node(node_text_play, action.x, action.y) then
+			gui.set_color(node_hover_play, vmath.vector4(color_hover_play))
+			gui.set_color(node_hover_quit, color_invisible)
+			gui.set_color(node_hover_options, color_invisible)
+			gui.set_color(node_hover_credits, color_invisible)
+		else
+			gui.set_color(node_hover_play, color_invisible)
+		end
+
+		-- Button option
+		if gui.pick_node(node_text_options, action.x, action.y) then
+			gui.set_color(node_hover_options, vmath.vector4(color_hover_options))
+			gui.set_color(node_hover_play, color_invisible)
+			gui.set_color(node_hover_quit, color_invisible)
+			gui.set_color(node_hover_credits, color_invisible)
+		else
+			gui.set_color(node_hover_options, color_invisible)
+		end
+
+		-- Button credit
+		if gui.pick_node(node_text_credits, action.x, action.y) then
+			gui.set_color(node_hover_credits, vmath.vector4(color_hover_credit))
+			gui.set_color(node_hover_play, color_invisible)
+			gui.set_color(node_hover_quit, color_invisible)
+			gui.set_color(node_hover_options, color_invisible)
+		else
+			gui.set_color(node_hover_credits, color_invisible)
+		end
+
+		-- Button quit
+		if gui.pick_node(node_text_quit, action.x, action.y) then
+			gui.set_color(node_hover_quit, vmath.vector4(color_hover_quit))
+			gui.set_color(node_hover_play, color_invisible)
+			gui.set_color(node_hover_options, color_invisible)
+			gui.set_color(node_hover_credits, color_invisible)
+		else
+			gui.set_color(node_hover_quit, color_invisible)
+		end
+	end
+
+	return self.druid:on_input(action_id, action)
+end
+
+function activate_input(self, action_id, action)
+	msg.post(".", "acquire_input_focus")
+end
+-------------------------------------------------  GETTER PART  ------------------------------------------------- 
+
+
+-- Get all the nodes for the main menu
+local function get_nodes()
+	node_background1 = gui.get_node("background")
+	node_background2 = gui.get_node("background2")
+	node_background3 = gui.get_node("background3")
+	node_background4 = gui.get_node("background4")
+	node_background5 = gui.get_node("background5")
+	node_background6 = gui.get_node("background6")
+
+	node_logo_novensstudio = gui.get_node("logo_novensstudio")
+	node_logo_defold = gui.get_node("logo_defold")
+	node_logo_credits_novensstudio = gui.get_node("logo_credits_novensstudio")
+
+	node_ui_leftbar = gui.get_node("ui_leftbar")
+	node_ui_shadeblack = gui.get_node("ui_shadeblack")
+	
+	node_text_title = gui.get_node("text_title")
+	node_text_play = gui.get_node("text_play")
+	node_text_options = gui.get_node("text_options")
+	node_text_credits = gui.get_node("text_credits")
+	node_text_quit = gui.get_node("text_quit")
+	node_text_version = gui.get_node("text_version")
+	
+	node_text_options_fullscreen = gui.get_node("text_options_fullscreen")
+	node_text_options_volume = gui.get_node("text_options_volume")
+	node_text_options_language = gui.get_node("text_options_language")
+
+	node_text_credits_text = gui.get_node("text_credits_text")
+	node_text_credits_text_blue = gui.get_node("text_credits_text_blue")
+
+	node_hover_play = gui.get_node("hover_play")
+	node_hover_options = gui.get_node("hover_options")
+	node_hover_credits = gui.get_node("hover_credit")
+	node_hover_quit = gui.get_node("hover_quit")
+
+	node_hover_options_fullscreen = gui.get_node("hover_options_fullscreen")
+	node_hover_options_volume = gui.get_node("hover_options_volume")
+	node_hover_options_language = gui.get_node("hover_options_language")
+
+	node_checkbox_fullscreen = gui.get_node("checkbox/back")
+	node_checkbox_fullscreen2 = gui.get_node("checkbox/back1")
+end
+
+-- Get all the colors for nodes
+local function get_nodes_colors()
+	color_invisible = vmath.vector4(0, 0, 0, 0)
+	color_visible = vmath.vector4(1,1,1,1)
+	
+	color_hover_quit = gui.get_color(node_hover_quit)
+	color_hover_play = gui.get_color(node_hover_play)
+	color_hover_options = gui.get_color(node_hover_options)
+	color_hover_credit = gui.get_color(node_hover_credits)
+
+	color_hover_options_fullscreen = gui.get_color(node_hover_options_fullscreen)
+	color_hover_options_volume = gui.get_color(node_hover_options_volume)
+	color_hover_options_language = gui.get_color(node_hover_options_language)
+	
+	color_ui_leftbar = gui.get_color(node_ui_leftbar)
+	color_ui_shadeblack = gui.get_color(node_ui_shadeblack)
+
+	color_text_credits_text_blue = gui.get_color(node_text_credits_text_blue)
+end
+
+
+-------------------------------------------------  DRUID PART  ------------------------------------------------- 
+
+
+-- Change the checkbox and set fullscreen or not
+local function checkbox_change(self, value)
+	if value == true then
+		gui.set_visible(gui.get_node("checkbox/back"), true)
+		gui.set_visible(gui.get_node("checkbox/check"), true)
+		defos.set_fullscreen(true)
+	end
+
+	if value == false then
+		gui.set_visible(gui.get_node("checkbox/back"), true)
+		gui.set_visible(gui.get_node("checkbox/check"), false)
+		defos.set_fullscreen(false)
+		defos.set_maximized(true)
+	end
+		
+end
+
+-- Final action for druid
+function final(self)
+	self.druid:final()
+end
+
+-- Update for druid
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+-- When receiving a message for druid
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+-- Create checkbox
+local function setup_druid(self)
+	checkbox = require("druid.extended.checkbox")
+	druid.register("checkbox", checkbox)
+	self.druid = druid.new(self)
+	fullscreen_checkbox = self.druid:new_checkbox("checkbox/back", checkbox_change)
+
+	-- Change here with the saved value
+	fullscreen_checkbox:set_state(false)
+
+end
+
+
+-------------------------------------------------  MAIN PART  ------------------------------------------------- 
+
+
+-- Main
+function init(self)
+
+	setup_druid(self)
+	
+	-- Launch the music
+	sound.play("mainmenu#sound_mainmenu_intro")
+	timer.delay(89, false, play_menu_music)
+
+	-- Getters of values
+	get_nodes()
+	get_nodes_colors()
+	hide_everything()
+
+	-- Animate parts of the intro menu
+	anim1_novensstudio(node_logo_novensstudio, 1)
+	anim1_defold_logo(node_logo_defold, 2)
+	
+	anim_fadein(node_background1, 6.5, color_visible)
+	anim_fadein(node_ui_leftbar, 5.5, color_ui_leftbar)
+	anim_fadein(node_text_title, 5.5, color_visible)
+	anim_fadein(node_text_play, 5.5, color_visible)
+	anim_fadein(node_text_options, 5.5, color_visible)
+	anim_fadein(node_text_credits, 5.5, color_visible)
+	anim_fadein(node_text_quit, 5.5, color_visible)
+	anim_fadein(node_text_version, 5.5, color_visible)
+
+	timer.delay(5.5, false, activate_input)
+
+	-- Wallpaper system
+	wallpaperactif = 1
+	timer.delay(6.5, false, circle_wallpaper)
+end

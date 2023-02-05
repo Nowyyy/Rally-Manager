@@ -1,0 +1,23 @@
+local monarch = require "monarch.monarch"
+
+function on_message(self, message_id, message, sender)
+	monarch.show(hash("mainmenu"))
+end
+
+function init(self)
+	local info = sys.get_sys_info()
+	local systemname = info.system_name
+	local ICON_NAMES = {
+		["Windows"] = "/assets/app_icons/appicon.ico"
+	}
+
+	defos.set_window_title("Rally Manager")
+	defos.disable_window_resize()
+
+	if ICON_NAMES[systemname] then
+		defos.set_window_icon(defos.get_bundle_root()..defos.PATH_SEP..ICON_NAMES[systemname])
+	end
+	
+	msg.post("#", "show_first_screen")
+	
+end
