@@ -21,8 +21,8 @@ Main menu :
 - Buttons to play / load / resume a game
 		
 ## Known bugs :
-- 2 clicks are required to set the game in fullscreen for the first time (no problem if the game start in fullscreen)
-- click sound has a massive delay
-- background and menu element don't use all the space on some resolutions
+- Two clicks are required to set the game in fullscreen for the first time (no problem if the game start in fullscreen)
+- Click sound has a massive delay
+- Background and menu element don't use all the space on some resolutions
 
 ---
