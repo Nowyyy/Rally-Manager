@@ -470,7 +470,7 @@ function on_input(self, action_id, action)
 		end
 
 		-- Button resume on play menu
-		if(gui.pick_node(node_mainmenu_play_hover_resume, action.x, action.y)) then
+		if(gui.pick_node(node_mainmenu_play_hover_resume, action.x, action.y)) and var_play_on == 1 then
 			gui.set_color(node_mainmenu_play_hover_resume, vmath.vector4(color_hover_play_resume))
 			gui.set_color(node_mainmenu_play_hover_new, color_invisible)
 			gui.set_color(node_mainmenu_play_hover_load, color_invisible)
@@ -479,7 +479,7 @@ function on_input(self, action_id, action)
 		end
 
 		-- Button new on play menu
-		if(gui.pick_node(node_mainmenu_play_hover_new, action.x, action.y)) then
+		if(gui.pick_node(node_mainmenu_play_hover_new, action.x, action.y)) and var_play_on == 1 then
 			gui.set_color(node_mainmenu_play_hover_new, vmath.vector4(color_hover_play_new))
 			gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
 			gui.set_color(node_mainmenu_play_hover_load, color_invisible)
@@ -488,7 +488,7 @@ function on_input(self, action_id, action)
 		end
 
 		-- Button load on play menu
-		if(gui.pick_node(node_mainmenu_play_hover_load, action.x, action.y)) then
+		if(gui.pick_node(node_mainmenu_play_hover_load, action.x, action.y)) and var_play_on == 1 then
 			gui.set_color(node_mainmenu_play_hover_load, vmath.vector4(color_hover_play_load))
 			gui.set_color(node_mainmenu_play_hover_new, color_invisible)
 			gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
@@ -508,54 +508,54 @@ end
 
 -- Get all the nodes for the main menu
 local function get_nodes()
-	node_background1 = gui.get_node("background")
-	node_background2 = gui.get_node("background2")
-	node_background3 = gui.get_node("background3")
-	node_background4 = gui.get_node("background4")
-	node_background5 = gui.get_node("background5")
-	node_background6 = gui.get_node("background6")
+	node_background1 = gui.get_node("mainmenu_background/background")
+	node_background2 = gui.get_node("mainmenu_background/background2")
+	node_background3 = gui.get_node("mainmenu_background/background3")
+	node_background4 = gui.get_node("mainmenu_background/background4")
+	node_background5 = gui.get_node("mainmenu_background/background5")
+	node_background6 = gui.get_node("mainmenu_background/background6")
 
-	node_logo_novensstudio = gui.get_node("logo_novensstudio")
-	node_logo_defold = gui.get_node("logo_defold")
-	node_logo_credits_novensstudio = gui.get_node("logo_credits_novensstudio")
+	node_logo_novensstudio = gui.get_node("mainmenu_intro/logo_novensstudio")
+	node_logo_defold = gui.get_node("mainmenu_intro/logo_defold")
+	node_logo_credits_novensstudio = gui.get_node("mainmenu_credits/logo_credits_novensstudio")
 
-	node_ui_leftbar = gui.get_node("ui_leftbar")
-	node_ui_shadeblack = gui.get_node("ui_shadeblack")
+	node_ui_leftbar = gui.get_node("mainmenu_background/ui_leftbar")
+	node_ui_shadeblack = gui.get_node("mainmenu_background/ui_shadeblack")
 	
-	node_text_title = gui.get_node("text_title")
-	node_text_play = gui.get_node("text_play")
-	node_text_options = gui.get_node("text_options")
-	node_text_credits = gui.get_node("text_credits")
-	node_text_quit = gui.get_node("text_quit")
+	node_text_title = gui.get_node("mainmenu_menu/text_title")
+	node_text_play = gui.get_node("mainmenu_menu/text_play")
+	node_text_options = gui.get_node("mainmenu_menu/text_options")
+	node_text_credits = gui.get_node("mainmenu_menu/text_credits")
+	node_text_quit = gui.get_node("mainmenu_menu/text_quit")
 	node_text_version = gui.get_node("text_version")
 
-	node_text_options_resolution = gui.get_node("text_options_resolution")
-	node_text_options_resolution_active = gui.get_node("text_options_resolution_active")
-	node_text_options_fullscreen = gui.get_node("text_options_fullscreen")
-	node_text_options_music = gui.get_node("text_options_sound_music")
-	node_text_options_click = gui.get_node("text_options_sound_click")
-	node_text_options_language = gui.get_node("text_options_language")
+	node_text_options_resolution = gui.get_node("mainmenu_options/text_options_resolution")
+	node_text_options_resolution_active = gui.get_node("mainmenu_options/text_options_resolution_active")
+	node_text_options_fullscreen = gui.get_node("mainmenu_options/text_options_fullscreen")
+	node_text_options_music = gui.get_node("mainmenu_options/text_options_sound_music")
+	node_text_options_click = gui.get_node("mainmenu_options/text_options_sound_click")
+	node_text_options_language = gui.get_node("mainmenu_options/text_options_language")
 
-	node_text_credits_text = gui.get_node("text_credits_text")
-	node_text_credits_text_blue = gui.get_node("text_credits_text_blue")
+	node_text_credits_text = gui.get_node("mainmenu_credits/text_credits_text")
+	node_text_credits_text_blue = gui.get_node("mainmenu_credits/text_credits_text_blue")
 
-	node_hover_play = gui.get_node("hover_play")
-	node_hover_options = gui.get_node("hover_options")
-	node_hover_credits = gui.get_node("hover_credit")
-	node_hover_quit = gui.get_node("hover_quit")
+	node_hover_play = gui.get_node("mainmenu_menu/hover_play")
+	node_hover_options = gui.get_node("mainmenu_menu/hover_options")
+	node_hover_credits = gui.get_node("mainmenu_menu/hover_credit")
+	node_hover_quit = gui.get_node("mainmenu_menu/hover_quit")
 
-	node_hover_options_resolution = gui.get_node("hover_options_resolution")
-	node_hover_options_resolution_active = gui.get_node("hover_options_resolution_active")
-	node_hover_options_fullscreen = gui.get_node("hover_options_fullscreen")
-	node_hover_options_music = gui.get_node("hover_options_sound_music")
-	node_hover_options_click = gui.get_node("hover_options_sound_click")
-	node_hover_options_language = gui.get_node("hover_options_language")
+	node_hover_options_resolution = gui.get_node("mainmenu_options/hover_options_resolution")
+	node_hover_options_resolution_active = gui.get_node("mainmenu_options/hover_options_resolution_active")
+	node_hover_options_fullscreen = gui.get_node("mainmenu_options/hover_options_fullscreen")
+	node_hover_options_music = gui.get_node("mainmenu_options/hover_options_sound_music")
+	node_hover_options_click = gui.get_node("mainmenu_options/hover_options_sound_click")
+	node_hover_options_language = gui.get_node("mainmenu_options/hover_options_language")
 
 	node_checkbox_fullscreen = gui.get_node("checkbox/back")
 	node_checkbox_fullscreen2 = gui.get_node("checkbox/back1")
 
-	node_slider_music = gui.get_node("slider_music/root")
-	node_slider_click = gui.get_node("slider_click/root")
+	node_slider_music = gui.get_node("mainmenu_options/slider_music/root")
+	node_slider_click = gui.get_node("mainmenu_options/slider_click/root")
 
 	node_mainmenu_play_hover_resume = gui.get_node("mainmenu_play/play_hover_resume")
 	node_mainmenu_play_hover_new = gui.get_node("mainmenu_play/play_hover_new")
@@ -608,10 +608,10 @@ local function checkbox_change(self, value)
 		
 		defos.set_fullscreen(true)
 		-- Hide the blue hover on resolution
-		gui.set_enabled(gui.get_node("hover_options_resolution"), false)
+		gui.set_enabled(gui.get_node("mainmenu_options/hover_options_resolution"), false)
 		fullscreen = true
 
-		gui.set_text(gui.get_node("text_options_resolution_active"), max_width.."x"..max_height)
+		gui.set_text(gui.get_node("mainmenu_options/text_options_resolution_active"), max_width.."x"..max_height)
 	end
 
 	if value == false then
@@ -620,13 +620,14 @@ local function checkbox_change(self, value)
 		gui.set_visible(gui.get_node("checkbox/check"), false)
 
 		-- Disable fullscreen
+		defos.set_fullscreen(false)
 		defos.set_window_size(0, 0, actual_width, actual_height)
 		defos.set_view_size(0, 0, actual_width, actual_height)
-		defos.set_fullscreen(false)
+		
 
 		-- Show the blue hover on resolution
-		gui.set_enabled(gui.get_node("hover_options_resolution"), true)
-		gui.set_text(gui.get_node("text_options_resolution_active"), actual_width.."x"..actual_height)
+		gui.set_enabled(gui.get_node("mainmenu_options/hover_options_resolution"), true)
+		gui.set_text(gui.get_node("mainmenu_options/text_options_resolution_active"), actual_width.."x"..actual_height)
 		fullscreen = false
 	end
 		
@@ -668,23 +669,23 @@ local function setup_druid(self)
 
 	
 	-- Slider for volume
-	slider_music = self.druid:new_slider("slider_music/pin", vmath.vector3(95, 0, 0), function(_, value)
-		gui.set_text(gui.get_node("slider_music/text"), math.ceil(value * 100) .. "%")
+	slider_music = self.druid:new_slider("mainmenu_options/slider_music/pin", vmath.vector3(95, 0, 0), function(_, value)
+		gui.set_text(gui.get_node("mainmenu_options/slider_music/text"), math.ceil(value * 100) .. "%")
 		sound.set_group_gain("music", value)
 	end)
 
 	slider_music:set(1)
-	slider_music:set_input_node("slider_music/input_zone")
+	slider_music:set_input_node("mainmenu_options/slider_music/input_zone")
 
 	
 	-- Slider for clicks
-	slider_click = self.druid:new_slider("slider_click/pin", vmath.vector3(95, 0, 0), function(_, value)
-		gui.set_text(gui.get_node("slider_click/text"), math.ceil(value * 100) .. "%")
+	slider_click = self.druid:new_slider("mainmenu_options/slider_click/pin", vmath.vector3(95, 0, 0), function(_, value)
+		gui.set_text(gui.get_node("mainmenu_options/slider_click/text"), math.ceil(value * 100) .. "%")
 		sound.set_group_gain("sound", value)
 	end)
 
 	slider_click:set(1)
-	slider_click:set_input_node("slider_click/input_zone")
+	slider_click:set_input_node("mainmenu_options/slider_click/input_zone")
 
 end
 
