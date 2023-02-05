@@ -1,4 +1,8 @@
 script: ""
+fonts {
+  name: "font_mainmenu_clean"
+  font: "/assets/fonts/font_mainmenu_clean.font"
+}
 textures {
   name: "kenney"
   texture: "/assets/images/template/kenney.atlas"

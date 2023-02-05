@@ -1,10 +1,18 @@
-local monarch = require "monarch.monarch"
+monarch = require "monarch.monarch"
+druid = require("druid.druid")
+
+current_version = "Dev 0.3"
 
 actual_width = nil
 actual_height = nil
 fullscreen = nil
 max_width = nil
 max_height = nil
+
+widths = {7680, 3840, 2560, 1920, 1680, 1600, 1600, 1600, 1440, 1366, 1360, 1280, 1280, 1280, 1280, 1280, 1176, 1152, 1024}
+heights = {4320, 2160, 1440, 1080, 1050, 1200, 1024, 900, 900, 768, 768, 1024, 960, 800, 768, 720, 664, 864, 768}
+resolution_length = 19
+resolution_index = nil
 
 -- Delay before launching the mainmenu to make sure everything is loaded
 function on_message(self, message_id, message, sender)
@@ -22,6 +30,7 @@ function set_resolution()
 	actual_width = 1280
 	actual_height = 720
 	fullscreen = false
+	resolution_index = 16
 
 	-- get max resolution of monitor
 	local display_id = defos.get_current_display_id()
@@ -30,6 +39,7 @@ function set_resolution()
 	max_width = modes[1].width
 	max_height = modes[1].height
 	defos.set_window_size(0, 0, actual_width, actual_height)
+	
 end
 
 -- Main of the game

@@ -1,6 +1,6 @@
 -- file: menu.gui_script
 
-local druid = require("druid.druid")
+
 
 -- Creation of methods
 local circle_wallpaper1_2 = nil
@@ -14,11 +14,6 @@ local circle_wallpaper = nil
 -- Creation of global variables
 local var_credits_on = 0
 local var_options_on = 0
-
-widths = {7680, 3840, 2560, 1920, 1680, 1600, 1600, 1600, 1440, 1366, 1360, 1280, 1280, 1280, 1280, 1280, 1176, 1152, 1024}
-heights = {4320, 2160, 1440, 1080, 1050, 1200, 1024, 900, 900, 768, 768, 1024, 960, 800, 768, 720, 664, 864, 768}
-resolution_length = 19
-resolution_index = 1
 
 -------------------------------------------------  INTRO PART  ------------------------------------------------- 
 
@@ -512,6 +507,9 @@ local function checkbox_change(self, value)
 		gui.set_visible(gui.get_node("checkbox/back"), true)
 		gui.set_visible(gui.get_node("checkbox/check"), true)
 		-- Set in fullscreen
+		defos.set_window_size(0, 0, max_width, max_height)
+		defos.set_view_size(0, 0, max_width, max_height)
+		
 		defos.set_fullscreen(true)
 		-- Hide the blue hover on resolution
 		gui.set_enabled(gui.get_node("hover_options_resolution"), false)
@@ -526,6 +524,8 @@ local function checkbox_change(self, value)
 		gui.set_visible(gui.get_node("checkbox/check"), false)
 
 		-- Disable fullscreen
+		defos.set_window_size(0, 0, actual_width, actual_height)
+		defos.set_view_size(0, 0, actual_width, actual_height)
 		defos.set_fullscreen(false)
 
 		-- Show the blue hover on resolution
@@ -609,6 +609,8 @@ function init(self)
 	get_nodes()
 	get_nodes_colors()
 	hide_everything()
+
+	gui.set_text(node_text_version, current_version)
 
 	-- Animate parts of the intro menu
 	anim1_novensstudio(node_logo_novensstudio, 1)
