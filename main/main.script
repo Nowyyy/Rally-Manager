@@ -1,7 +1,7 @@
 monarch = require "monarch.monarch"
 druid = require("druid.druid")
 
-current_version = "Dev 0.3"
+current_version = "Dev 0.4"
 
 actual_width = nil
 actual_height = nil

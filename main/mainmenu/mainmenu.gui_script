@@ -1,7 +1,5 @@
 -- file: menu.gui_script
 
-
-
 -- Creation of methods
 local circle_wallpaper1_2 = nil
 local circle_wallpaper2_3 = nil
@@ -14,6 +12,7 @@ local circle_wallpaper = nil
 -- Creation of global variables
 local var_credits_on = 0
 local var_options_on = 0
+local var_play_on = 0
 
 -------------------------------------------------  INTRO PART  ------------------------------------------------- 
 
@@ -91,6 +90,13 @@ local function hide_everything()
 
 	gui.set_color(node_ui_leftbar, color_invisible)
 	gui.set_color(node_ui_shadeblack, color_invisible)
+
+	gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
+	gui.set_color(node_mainmenu_play_hover_new, color_invisible)
+	gui.set_color(node_mainmenu_play_hover_load, color_invisible)
+	gui.set_color(node_mainmenu_play_text_resume, color_invisible)
+	gui.set_color(node_mainmenu_play_text_new, color_invisible)
+	gui.set_color(node_mainmenu_play_text_load, color_invisible)
 end
 
 
@@ -267,12 +273,40 @@ local function button_quit_options()
 end
 
 
+-------------------------------------------------  PLAY PART  ------------------------------------------------- 
+
+local function button_launch_play()
+	gui.set_enabled(node_mainmenu_play_hover_resume, true)
+	gui.set_enabled(node_mainmenu_play_hover_new, true)
+	gui.set_enabled(node_mainmenu_play_hover_load, true)
+
+	
+	anim_fadein(node_mainmenu_play_text_resume, 0, color_visible)
+	anim_fadein(node_mainmenu_play_text_new, 0, color_visible)
+	anim_fadein(node_mainmenu_play_text_load, 0, color_visible)
+	
+	var_play_on = 1
+end
+
+local function button_quit_play()
+	gui.set_enabled(node_mainmenu_play_hover_resume, false)
+	gui.set_enabled(node_mainmenu_play_hover_new, false)
+	gui.set_enabled(node_mainmenu_play_hover_load, false)
+
+
+	anim_fadeout(node_mainmenu_play_text_resume, 0)
+	anim_fadeout(node_mainmenu_play_text_new, 0)
+	anim_fadeout(node_mainmenu_play_text_load, 0)
+	
+	var_play_on = 0
+end
+
+
 -------------------------------------------------  CREDITS PART  ------------------------------------------------- 
 
 
 -- Launch of credits 
 local function button_launch_credits()
-	anim_fadein(node_ui_shadeblack, 0, color_ui_shadeblack)
 	anim_fadein(node_logo_credits_novensstudio, 0, color_visible)
 	anim_fadein(node_text_credits_text, 0, color_visible)
 	anim_fadein(node_text_credits_text_blue, 0, color_text_credits_text_blue)
@@ -299,6 +333,22 @@ function on_input(self, action_id, action)
 		-- Button play
 		if(gui.pick_node(node_hover_play,action.x,action.y)) then
 			
+			if var_credits_on == 1 then
+				button_quit_credits()
+			end
+
+			if var_options_on == 1 then
+				button_quit_options()
+			end
+
+			if var_play_on == 0 then
+				fade_in_shade_background()
+				button_launch_play()
+			else
+				button_quit_play()
+				fade_out_shade_background()
+			end
+			
 		end
 
 		-- Button option
@@ -306,6 +356,10 @@ function on_input(self, action_id, action)
 
 			if var_credits_on == 1 then
 				button_quit_credits()
+			end
+
+			if var_play_on == 1 then
+				button_quit_play()
 			end
 
 			if var_options_on == 0 then
@@ -322,6 +376,10 @@ function on_input(self, action_id, action)
 
 			if var_options_on == 1 then
 				button_quit_options()
+			end
+
+			if var_play_on == 1 then
+				button_quit_play()
 			end
 
 			if var_credits_on == 0 then
@@ -410,6 +468,33 @@ function on_input(self, action_id, action)
 		else
 			gui.set_color(node_hover_quit, color_invisible)
 		end
+
+		-- Button resume on play menu
+		if(gui.pick_node(node_mainmenu_play_hover_resume, action.x, action.y)) then
+			gui.set_color(node_mainmenu_play_hover_resume, vmath.vector4(color_hover_play_resume))
+			gui.set_color(node_mainmenu_play_hover_new, color_invisible)
+			gui.set_color(node_mainmenu_play_hover_load, color_invisible)
+		else
+			gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
+		end
+
+		-- Button new on play menu
+		if(gui.pick_node(node_mainmenu_play_hover_new, action.x, action.y)) then
+			gui.set_color(node_mainmenu_play_hover_new, vmath.vector4(color_hover_play_new))
+			gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
+			gui.set_color(node_mainmenu_play_hover_load, color_invisible)
+		else
+			gui.set_color(node_mainmenu_play_hover_new, color_invisible)
+		end
+
+		-- Button load on play menu
+		if(gui.pick_node(node_mainmenu_play_hover_load, action.x, action.y)) then
+			gui.set_color(node_mainmenu_play_hover_load, vmath.vector4(color_hover_play_load))
+			gui.set_color(node_mainmenu_play_hover_new, color_invisible)
+			gui.set_color(node_mainmenu_play_hover_resume, color_invisible)
+		else
+			gui.set_color(node_mainmenu_play_hover_load, color_invisible)
+		end
 	end
 
 	return self.druid:on_input(action_id, action)
@@ -471,6 +556,13 @@ local function get_nodes()
 
 	node_slider_music = gui.get_node("slider_music/root")
 	node_slider_click = gui.get_node("slider_click/root")
+
+	node_mainmenu_play_hover_resume = gui.get_node("mainmenu_play/play_hover_resume")
+	node_mainmenu_play_hover_new = gui.get_node("mainmenu_play/play_hover_new")
+	node_mainmenu_play_hover_load = gui.get_node("mainmenu_play/play_hover_load")
+	node_mainmenu_play_text_resume = gui.get_node("mainmenu_play/play_text_resume")
+	node_mainmenu_play_text_new = gui.get_node("mainmenu_play/play_text_new")
+	node_mainmenu_play_text_load = gui.get_node("mainmenu_play/play_text_load")
 end
 
 -- Get all the colors for nodes
@@ -482,6 +574,10 @@ local function get_nodes_colors()
 	color_hover_play = gui.get_color(node_hover_play)
 	color_hover_options = gui.get_color(node_hover_options)
 	color_hover_credit = gui.get_color(node_hover_credits)
+
+	color_hover_play_resume = gui.get_color(node_mainmenu_play_hover_resume)
+	color_hover_play_new = gui.get_color(node_mainmenu_play_hover_new)
+	color_hover_play_load = gui.get_color(node_mainmenu_play_hover_load)
 
 	color_hover_options_resolution = gui.get_color(node_hover_options_resolution)
 	color_hover_options_fullscreen = gui.get_color(node_hover_options_fullscreen)
