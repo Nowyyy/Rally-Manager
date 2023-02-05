@@ -1,10 +1,41 @@
 local monarch = require "monarch.monarch"
 
+actual_width = nil
+actual_height = nil
+fullscreen = nil
+max_width = nil
+max_height = nil
+
+-- Delay before launching the mainmenu to make sure everything is loaded
 function on_message(self, message_id, message, sender)
 	monarch.show(hash("mainmenu"))
 end
 
+-- On input, play sound
+function on_input(self, action_id, action)
+	if(action_id == hash("mouse_button_left") and action.released == true) then
+		sound.play("go#sound_click")
+	end
+end
+
+function set_resolution()
+	actual_width = 1280
+	actual_height = 720
+	fullscreen = false
+
+	-- get max resolution of monitor
+	local display_id = defos.get_current_display_id()
+	local modes = defos.get_display_modes(display_id)
+
+	max_width = modes[1].width
+	max_height = modes[1].height
+	defos.set_window_size(0, 0, actual_width, actual_height)
+end
+
+-- Main of the game
 function init(self)
+
+	-- Initiate window
 	local info = sys.get_sys_info()
 	local systemname = info.system_name
 	local ICON_NAMES = {
@@ -13,11 +44,13 @@ function init(self)
 
 	defos.set_window_title("Rally Manager")
 	defos.disable_window_resize()
+	set_resolution()
 
 	if ICON_NAMES[systemname] then
 		defos.set_window_icon(defos.get_bundle_root()..defos.PATH_SEP..ICON_NAMES[systemname])
 	end
-	
+
+	-- Launch main screen
 	msg.post("#", "show_first_screen")
 	
 end

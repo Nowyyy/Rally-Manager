@@ -15,6 +15,10 @@ local circle_wallpaper = nil
 local var_credits_on = 0
 local var_options_on = 0
 
+widths = {7680, 3840, 2560, 1920, 1680, 1600, 1600, 1600, 1440, 1366, 1360, 1280, 1280, 1280, 1280, 1280, 1176, 1152, 1024}
+heights = {4320, 2160, 1440, 1080, 1050, 1200, 1024, 900, 900, 768, 768, 1024, 960, 800, 768, 720, 664, 864, 768}
+resolution_length = 19
+resolution_index = 1
 
 -------------------------------------------------  INTRO PART  ------------------------------------------------- 
 
@@ -65,8 +69,11 @@ local function hide_everything()
 	gui.set_color(node_text_quit, color_invisible)
 	gui.set_color(node_text_version, color_invisible)
 
+	gui.set_color(node_text_options_resolution, color_invisible)
+	gui.set_color(node_text_options_resolution_active, color_invisible)
 	gui.set_color(node_text_options_fullscreen, color_invisible)
-	gui.set_color(node_text_options_volume, color_invisible)
+	gui.set_color(node_text_options_music, color_invisible)
+	gui.set_color(node_text_options_click, color_invisible)
 	gui.set_color(node_text_options_language, color_invisible)
 
 	gui.set_color(node_text_credits_text, color_invisible)
@@ -80,9 +87,11 @@ local function hide_everything()
 	gui.set_color(node_hover_options, color_invisible)
 	gui.set_color(node_hover_quit, color_invisible)
 	gui.set_color(node_hover_credits, color_invisible)
-	
+
+	gui.set_color(node_hover_options_resolution, color_invisible)
 	gui.set_color(node_hover_options_fullscreen, color_invisible)
-	gui.set_color(node_hover_options_volume, color_invisible)
+	gui.set_color(node_hover_options_music, color_invisible)
+	gui.set_color(node_hover_options_click, color_invisible)
 	gui.set_color(node_hover_options_language, color_invisible)
 
 	gui.set_color(node_ui_leftbar, color_invisible)
@@ -195,40 +204,67 @@ end
 
 -- Launch of options
 local function button_launch_options(self)
-	fullscreen_checkbox:set_state(self, true)
-	
+	checkbox_fullscreen:set_state(self, true)
+
+	gui.set_enabled(node_hover_options_resolution, true)
+	gui.set_enabled(node_hover_options_resolution_active, true)
 	gui.set_enabled(node_hover_options_fullscreen, true)
-	gui.set_enabled(node_hover_options_volume, true)
+	gui.set_enabled(node_hover_options_music, true)
+	gui.set_enabled(node_hover_options_click, true)
 	gui.set_enabled(node_hover_options_language, true)
 	gui.set_enabled(node_checkbox_fullscreen, true)
 	gui.set_enabled(node_checkbox_fullscreen2, true)
+	gui.set_enabled(node_slider_music, true)
+	gui.set_enabled(node_slider_click, true)
 
-	
+	if fullscreen == true then
+		gui.set_enabled(node_hover_options_resolution, false)
+	end
+
+
+	anim_fadein(node_hover_options_resolution, 0, color_hover_options_resolution)
+	anim_fadein(node_text_options_resolution, 0, color_visible)
+	anim_fadein(node_text_options_resolution_active, 0, color_visible)
 	anim_fadein(node_hover_options_fullscreen, 0, color_hover_options_fullscreen)
 	anim_fadein(node_text_options_fullscreen, 0, color_visible)
-
-	anim_fadein(node_hover_options_volume, 0, color_hover_options_volume)
-	anim_fadein(node_text_options_volume, 0, color_visible)
+	
+	anim_fadein(node_hover_options_music, 0, color_hover_options_volume)
+	anim_fadein(node_hover_options_click, 0, color_hover_options_click)
+	anim_fadein(node_text_options_music, 0, color_visible)
+	anim_fadein(node_text_options_click, 0, color_visible)
 
 	anim_fadein(node_hover_options_language, 0, color_hover_options_language)
 	anim_fadein(node_text_options_language, 0, color_visible)
+
+	local modes, modes1, width, height = defos.get_window_size()
+	gui.set_text(node_text_options_resolution_active, width.."x"..height)
 	
 	var_options_on = 1
 end
 
 -- Close of options
 local function button_quit_options()
+	gui.set_enabled(node_hover_options_resolution, false)
+	gui.set_enabled(node_hover_options_resolution_active, false)
 	gui.set_enabled(node_hover_options_fullscreen, false)
-	gui.set_enabled(node_hover_options_volume, false)
+	gui.set_enabled(node_hover_options_music, false)
+	gui.set_enabled(node_hover_options_click, false)
 	gui.set_enabled(node_hover_options_language, false)
 	gui.set_enabled(node_checkbox_fullscreen, false)
 	gui.set_enabled(node_checkbox_fullscreen2, false)
-	
+	gui.set_enabled(node_slider_music, false)
+	gui.set_enabled(node_slider_click, false)
+
+	anim_fadeout(node_hover_options_resolution, 0)
+	anim_fadeout(node_text_options_resolution, 0)
+	anim_fadeout(node_text_options_resolution_active, 0)
 	anim_fadeout(node_hover_options_fullscreen, 0)
 	anim_fadeout(node_text_options_fullscreen, 0)
 
-	anim_fadeout(node_hover_options_volume, 0)
-	anim_fadeout(node_text_options_volume, 0)
+	anim_fadeout(node_hover_options_music, 0)
+	anim_fadeout(node_hover_options_click, 0)
+	anim_fadeout(node_text_options_music, 0)
+	anim_fadeout(node_text_options_click, 0)
 
 	anim_fadeout(node_hover_options_language, 0)
 	anim_fadeout(node_text_options_language, 0)
@@ -262,17 +298,16 @@ end
 -- Actions for buttons
 function on_input(self, action_id, action)
 	
-	-- Manage closing the game with quit button
+	-- All actions on click
 	if(action_id == hash("touch") and action.pressed == true) then
 
 		-- Button play
 		if(gui.pick_node(node_hover_play,action.x,action.y)) then
-			sound.play("mainmenu#sound_mainmenu_click")
+			
 		end
 
 		-- Button option
 		if(gui.pick_node(node_hover_options,action.x,action.y)) then
-			sound.play("mainmenu#sound_mainmenu_click")
 
 			if var_credits_on == 1 then
 				button_quit_credits()
@@ -289,7 +324,6 @@ function on_input(self, action_id, action)
 
 		-- Button credits
 		if(gui.pick_node(node_hover_credits,action.x,action.y)) then
-			sound.play("mainmenu#sound_mainmenu_click")
 
 			if var_options_on == 1 then
 				button_quit_options()
@@ -307,8 +341,35 @@ function on_input(self, action_id, action)
 
 		-- Button quit
 		if(gui.pick_node(node_hover_quit,action.x,action.y)) then
-			sound.play("mainmenu#sound_mainmenu_click")
 			msg.post("@system:", "exit", {code = 0})
+		end
+
+		-- Button resolution
+		if(gui.pick_node(node_hover_options_resolution_active, action.x, action.y)) and fullscreen == false then
+			
+			local next_resolution_index = resolution_index + 1
+
+			-- If index is at max
+			if(next_resolution_index > resolution_length) then
+				next_resolution_index = 1
+			end
+
+			-- If resolution is higher than monitor max resolution
+			if widths[next_resolution_index] > max_width then
+				while widths[next_resolution_index] > max_width do
+					next_resolution_index = next_resolution_index + 1
+				end
+			end
+
+			-- Set the new resolution
+			resolution_index = next_resolution_index
+
+			actual_width = widths[next_resolution_index]
+			actual_height = heights[next_resolution_index]
+			
+			defos.set_window_size(0, 0, actual_width, actual_height)
+			defos.set_view_size(0, 0, actual_width, actual_height)
+			gui.set_text(node_text_options_resolution_active, actual_width.."x"..actual_height)
 		end
 	end
 
@@ -387,9 +448,12 @@ local function get_nodes()
 	node_text_credits = gui.get_node("text_credits")
 	node_text_quit = gui.get_node("text_quit")
 	node_text_version = gui.get_node("text_version")
-	
+
+	node_text_options_resolution = gui.get_node("text_options_resolution")
+	node_text_options_resolution_active = gui.get_node("text_options_resolution_active")
 	node_text_options_fullscreen = gui.get_node("text_options_fullscreen")
-	node_text_options_volume = gui.get_node("text_options_volume")
+	node_text_options_music = gui.get_node("text_options_sound_music")
+	node_text_options_click = gui.get_node("text_options_sound_click")
 	node_text_options_language = gui.get_node("text_options_language")
 
 	node_text_credits_text = gui.get_node("text_credits_text")
@@ -400,12 +464,18 @@ local function get_nodes()
 	node_hover_credits = gui.get_node("hover_credit")
 	node_hover_quit = gui.get_node("hover_quit")
 
+	node_hover_options_resolution = gui.get_node("hover_options_resolution")
+	node_hover_options_resolution_active = gui.get_node("hover_options_resolution_active")
 	node_hover_options_fullscreen = gui.get_node("hover_options_fullscreen")
-	node_hover_options_volume = gui.get_node("hover_options_volume")
+	node_hover_options_music = gui.get_node("hover_options_sound_music")
+	node_hover_options_click = gui.get_node("hover_options_sound_click")
 	node_hover_options_language = gui.get_node("hover_options_language")
 
 	node_checkbox_fullscreen = gui.get_node("checkbox/back")
 	node_checkbox_fullscreen2 = gui.get_node("checkbox/back1")
+
+	node_slider_music = gui.get_node("slider_music/root")
+	node_slider_click = gui.get_node("slider_click/root")
 end
 
 -- Get all the colors for nodes
@@ -418,8 +488,10 @@ local function get_nodes_colors()
 	color_hover_options = gui.get_color(node_hover_options)
 	color_hover_credit = gui.get_color(node_hover_credits)
 
+	color_hover_options_resolution = gui.get_color(node_hover_options_resolution)
 	color_hover_options_fullscreen = gui.get_color(node_hover_options_fullscreen)
-	color_hover_options_volume = gui.get_color(node_hover_options_volume)
+	color_hover_options_volume = gui.get_color(node_hover_options_music)
+	color_hover_options_click = gui.get_color(node_hover_options_click)
 	color_hover_options_language = gui.get_color(node_hover_options_language)
 	
 	color_ui_leftbar = gui.get_color(node_ui_leftbar)
@@ -435,16 +507,31 @@ end
 -- Change the checkbox and set fullscreen or not
 local function checkbox_change(self, value)
 	if value == true then
+
+		-- Show the checkbox
 		gui.set_visible(gui.get_node("checkbox/back"), true)
 		gui.set_visible(gui.get_node("checkbox/check"), true)
+		-- Set in fullscreen
 		defos.set_fullscreen(true)
+		-- Hide the blue hover on resolution
+		gui.set_enabled(gui.get_node("hover_options_resolution"), false)
+		fullscreen = true
+
+		gui.set_text(gui.get_node("text_options_resolution_active"), max_width.."x"..max_height)
 	end
 
 	if value == false then
+		-- Show the checkbox
 		gui.set_visible(gui.get_node("checkbox/back"), true)
 		gui.set_visible(gui.get_node("checkbox/check"), false)
+
+		-- Disable fullscreen
 		defos.set_fullscreen(false)
-		defos.set_maximized(true)
+
+		-- Show the blue hover on resolution
+		gui.set_enabled(gui.get_node("hover_options_resolution"), true)
+		gui.set_text(gui.get_node("text_options_resolution_active"), actual_width.."x"..actual_height)
+		fullscreen = false
 	end
 		
 end
@@ -464,15 +551,44 @@ function on_message(self, message_id, message, sender)
 	self.druid:on_message(message_id, message, sender)
 end
 
--- Create checkbox
+-- Create options elements
 local function setup_druid(self)
+
+	-- Register the new elements
 	checkbox = require("druid.extended.checkbox")
 	druid.register("checkbox", checkbox)
+
+	slider = require("druid.extended.slider")
+	druid.register("slider", slider)
+
+	
+	-- Checkbox for fullscreen
 	self.druid = druid.new(self)
-	fullscreen_checkbox = self.druid:new_checkbox("checkbox/back", checkbox_change)
+	checkbox_fullscreen = self.druid:new_checkbox("checkbox/back", checkbox_change)
 
 	-- Change here with the saved value
-	fullscreen_checkbox:set_state(false)
+	checkbox_fullscreen:set_state(false)
+	fullscreen = false
+
+	
+	-- Slider for volume
+	slider_music = self.druid:new_slider("slider_music/pin", vmath.vector3(95, 0, 0), function(_, value)
+		gui.set_text(gui.get_node("slider_music/text"), math.ceil(value * 100) .. "%")
+		sound.set_group_gain("music", value)
+	end)
+
+	slider_music:set(1)
+	slider_music:set_input_node("slider_music/input_zone")
+
+	
+	-- Slider for clicks
+	slider_click = self.druid:new_slider("slider_click/pin", vmath.vector3(95, 0, 0), function(_, value)
+		gui.set_text(gui.get_node("slider_click/text"), math.ceil(value * 100) .. "%")
+		sound.set_group_gain("sound", value)
+	end)
+
+	slider_click:set(1)
+	slider_click:set_input_node("slider_click/input_zone")
 
 end
 
@@ -506,6 +622,7 @@ function init(self)
 	anim_fadein(node_text_credits, 5.5, color_visible)
 	anim_fadein(node_text_quit, 5.5, color_visible)
 	anim_fadein(node_text_version, 5.5, color_visible)
+	
 
 	timer.delay(5.5, false, activate_input)
 

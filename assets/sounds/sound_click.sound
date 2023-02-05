@@ -1,4 +1,4 @@
-sound: "/assets/sounds/sound_mainmenu_click.ogg"
+sound: "/assets/sounds/sound_click.ogg"
 looping: 0
 group: "master"
 gain: 1.0
