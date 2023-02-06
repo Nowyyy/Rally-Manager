@@ -1,4 +1,4 @@
-script: "/assets/template/template.gui_script"
+script: "/assets/templates/template.gui_script"
 fonts {
   name: "game"
   font: "/assets/fonts/font_mainmenu_clean.font"

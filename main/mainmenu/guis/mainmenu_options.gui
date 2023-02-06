@@ -777,7 +777,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  template: "/assets/template/druid_slider.gui"
+  template: "/assets/templates/druid_slider.gui"
   template_node_child: false
   custom_type: 0
   enabled: true
@@ -1062,7 +1062,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  template: "/assets/template/druid_slider.gui"
+  template: "/assets/templates/druid_slider.gui"
   template_node_child: false
   custom_type: 0
   enabled: true

@@ -523,7 +523,7 @@ local function get_nodes()
 	node_ui_shadeblack = gui.get_node("mainmenu_background/ui_shadeblack")
 	
 	node_text_title = gui.get_node("mainmenu_menu/text_title")
-	node_text_play = gui.get_node("mainmenu_menu/text_play")
+	node_text_play = gui.get_node("mainmenu_menu/button_menu_play/text")
 	node_text_options = gui.get_node("mainmenu_menu/text_options")
 	node_text_credits = gui.get_node("mainmenu_menu/text_credits")
 	node_text_quit = gui.get_node("mainmenu_menu/text_quit")
@@ -539,7 +539,7 @@ local function get_nodes()
 	node_text_credits_text = gui.get_node("mainmenu_credits/text_credits_text")
 	node_text_credits_text_blue = gui.get_node("mainmenu_credits/text_credits_text_blue")
 
-	node_hover_play = gui.get_node("mainmenu_menu/hover_play")
+	node_hover_play = gui.get_node("mainmenu_menu/button_menu_play/hover")
 	node_hover_options = gui.get_node("mainmenu_menu/hover_options")
 	node_hover_credits = gui.get_node("mainmenu_menu/hover_credit")
 	node_hover_quit = gui.get_node("mainmenu_menu/hover_quit")
@@ -706,6 +706,9 @@ function init(self)
 	get_nodes()
 	get_nodes_colors()
 	hide_everything()
+
+	--msg.post("/button/button#button", "init")
+	msg.post("mainmenu_menu/button_menu_play", "init")
 
 	gui.set_text(node_text_version, current_version)
 
