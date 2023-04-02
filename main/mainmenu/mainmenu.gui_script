@@ -1,0 +1,46 @@
+-- file: mainmenu.gui_script
+
+function button_anim_fadein(node, d, color)
+	gui.animate(node, gui.PROP_COLOR, color, gui.EASING_OUTQUAD, 0.5, d)
+end
+
+-- Fade out node
+function button_anim_fadeout(node, d)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, d)
+end
+
+-- Launch the menu music on repete
+local function play_menu_music_on_repeat(obj, handle, elapsed)
+	sound.stop("mainmenu#sound_mainmenu_repete")
+	sound.play("mainmenu#sound_mainmenu_repete")
+	timer.delay(70, true, play_menu_music_on_repeat)
+end
+
+-- Launch the menu music
+local function play_menu_music(obj, handle, elapsed)
+	sound.play("mainmenu#sound_mainmenu_repete")
+	timer.delay(70, true, play_menu_music_on_repeat)
+end
+
+
+function activate_input(self, action_id, action)
+	msg.post("mainmenu_menu", "show_mainmenu_menu")
+	msg.post("mainmenu_background", "show_mainmenu_background")
+	msg.post(".", "acquire_input_focus")
+end
+
+-- Main
+function init(self)
+
+	--setup_druid(self)
+	
+	-- Launch the music
+	sound.play("mainmenu#sound_mainmenu_intro")
+	timer.delay(89, false, play_menu_music)
+
+
+	-- Animate parts of the intro menu
+	msg.post("mainmenu_intro", "activate_intro")
+
+	timer.delay(5.5, false, activate_input)
+end

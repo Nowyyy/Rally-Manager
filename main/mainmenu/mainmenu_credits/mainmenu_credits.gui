@@ -1,11 +1,11 @@
-script: "/main/mainmenu/scripts/mainmenu.gui_script"
+script: "/main/mainmenu/mainmenu_credits/mainmenu_credits.gui_script"
 fonts {
   name: "font_mainmenu_clean"
   font: "/assets/fonts/font_mainmenu_clean.font"
 }
 textures {
   name: "mainmenu_background"
-  texture: "/main/mainmenu/atlas/mainmenu_background.atlas"
+  texture: "/main/mainmenu/mainmenu_background.atlas"
 }
 background_color {
   x: 0.0

@@ -1,7 +1,7 @@
-script: ""
+script: "/main/mainmenu/mainmenu_background/mainmenu_background.gui_script"
 textures {
   name: "mainmenu_background"
-  texture: "/main/mainmenu/atlas/mainmenu_background.atlas"
+  texture: "/main/mainmenu/mainmenu_background.atlas"
 }
 background_color {
   x: 0.0
@@ -11,8 +11,8 @@ background_color {
 }
 nodes {
   position {
-    x: 1008.0
-    y: 528.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -23,14 +23,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.017
-    y: 1.017
-    z: 1.017
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 1920.0
-    y: 1080.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -43,7 +43,7 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: "mainmenu_background/img_mainmenu_background"
-  id: "background"
+  id: "background1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -68,8 +68,8 @@ nodes {
 }
 nodes {
   position {
-    x: 1279.0
-    y: 571.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -80,14 +80,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.576
-    y: 1.576
-    z: 1.576
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -118,15 +118,15 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
   visible: true
 }
 nodes {
   position {
-    x: 1237.0
-    y: 571.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -137,14 +137,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.596
-    y: 0.596
-    z: 0.596
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -175,15 +175,15 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
   visible: true
 }
 nodes {
   position {
-    x: 1237.0
-    y: 571.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -194,14 +194,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.156
-    y: 1.156
-    z: 1.156
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -232,15 +232,15 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
   visible: true
 }
 nodes {
   position {
-    x: 1178.0
-    y: 571.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -251,14 +251,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.875
-    y: 0.875
-    z: 0.875
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -289,15 +289,15 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
   visible: true
 }
 nodes {
   position {
-    x: 1415.0
-    y: 571.0
+    x: 1346.0
+    y: 634.0
     z: 0.0
     w: 1.0
   }
@@ -308,14 +308,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.225
-    y: 1.225
-    z: 1.225
+    x: 0.77
+    y: 0.77
+    z: 0.77
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 3840.0
+    y: 2160.0
     z: 0.0
     w: 1.0
   }
@@ -346,7 +346,7 @@ nodes {
   clipping_inverted: false
   alpha: 1.0
   template_node_child: false
-  size_mode: SIZE_MODE_AUTO
+  size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
   visible: true

@@ -1,0 +1,141 @@
+local set_invisible
+local get_colors
+local get_nodes
+local initiate_nodes
+local set_hover_size
+
+local hover_activated
+
+-- Set hovers size depending on text
+function set_hover_size(text, hover)
+	local metrics = gui.get_text_metrics_from_node(text)
+	local positions = gui.get_position(text)
+	positions.x = positions.x - 10
+
+	gui.set_size(hover, vmath.vector4(metrics.width+20, metrics.height, 0, 0))
+	gui.set_position(hover, positions)
+end
+
+
+-- Set all nodes invisible
+function set_invisible(self)
+	for i = 1,#nodes do
+		for j = 1,2 do
+			gui.set_color(nodes[i][j], color_invisible)
+		end
+	end
+end
+
+function get_colors(self)
+	hover_color = gui.get_color(resume_text)
+end
+
+-- Get all nodes of GUI
+function get_nodes(self)
+	-- Initiate table
+	for i = 1, 3 do
+		nodes[i] = {}
+	end
+	
+	resume_text = gui.get_node("play_text_resume")
+	new_text = gui.get_node("play_text_new")
+	load_text = gui.get_node("play_text_load")
+	
+	resume_hover = gui.get_node("play_hover_resume")
+	new_hover = gui.get_node("play_hover_new")
+	load_hover = gui.get_node("play_hover_load")
+
+	nodes[1][1] = resume_text
+	nodes[1][2] = resume_hover
+	nodes[2][1] = new_text
+	nodes[2][2] = new_hover
+	nodes[3][1] = load_text
+	nodes[3][2] = load_hover
+end
+
+-- Initiate all nodes when GUI is launched
+function initiate_nodes(self)
+	get_nodes()
+	get_colors()
+	set_invisible()
+
+	for i = 1,#nodes do
+		set_hover_size(nodes[i][1], nodes[i][2])
+	end
+end
+
+-- Init the menu
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	nodes = {}
+	hover_activated = 0
+	initiate_nodes()
+end
+
+-- Launch the submenu
+function launch_play(self)
+	for i=1, #nodes do
+		button_anim_fadein(nodes[i][1], 0, color_visible)
+	end
+end
+
+-- Quit the submenu
+function quit_play(self)
+	for i=1, #nodes do
+		button_anim_fadeout(nodes[i][1], 0)
+	end
+end
+
+-- When receiving a message
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_mainmenu_play") then
+		hover_activated = 1
+		msg.post("mainmenu_background", "activate_shade")
+		launch_play()
+	end
+
+	if message_id == hash("hide_mainmenu_play") then
+		hover_activated = 0
+		msg.post("mainmenu_background", "deactivate_shade")
+		quit_play()
+	end
+end
+
+-- On mouse input
+function on_input(self, action_id, action)
+
+	-- Activate hover
+	if action_id == nil and hover_activated == 1 then
+		-- Button resume
+		if gui.pick_node(resume_text, action.x, action.y) then
+			gui.set_color(resume_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(resume_hover, color_invisible)
+		end
+
+		-- Button new
+		if gui.pick_node(new_text, action.x, action.y) then
+			gui.set_color(new_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(new_hover, color_invisible)
+		end
+
+		-- Button load
+		if gui.pick_node(load_text, action.x, action.y) then
+			gui.set_color(load_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(load_hover, color_invisible)
+		end
+
+	end
+
+end
+
+function final(self)
+end
+
+function update(self, dt)
+end
+
+function on_reload(self)
+end

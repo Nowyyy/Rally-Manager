@@ -1,0 +1,167 @@
+local set_invisible
+local initiate_nodes
+local get_nodes
+
+local nodes
+local wallpaperactif
+local leftbar_color
+local shadeblack_color
+local wallpaper_animation_delay
+local hover_activated
+local fade_in_shade_background
+local fade_out_shade_background
+local change_image_resolution
+
+-- Fade out the shade of background
+function fade_out_shade_background()
+	button_anim_fadeout(node_ui_shadeblack, 0)
+end
+
+-- Fade in the shade of background
+function fade_in_shade_background()
+	button_anim_fadein(node_ui_shadeblack, 0, color_ui_shadeblack)
+end
+
+-- Circle from wallpaper 6 to wallpaper 1
+function circle_wallpaper6_1(obj, handle, elapsed)
+	button_anim_fadeout(nodes[8], wallpaper_animation_delay)
+	button_anim_fadein(nodes[3], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 1
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 5 to wallpaper 6
+function circle_wallpaper5_6(obj, handle, elapsed)
+	button_anim_fadeout(nodes[7], wallpaper_animation_delay)
+	button_anim_fadein(nodes[8], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 6
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 4 to wallpaper 5
+function circle_wallpaper4_5(obj, handle, elapsed)
+	button_anim_fadeout(nodes[6], wallpaper_animation_delay)
+	button_anim_fadein(nodes[7], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 5
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 3 to wallpaper 4
+function circle_wallpaper3_4(obj, handle, elapsed)
+	button_anim_fadeout(nodes[5], wallpaper_animation_delay)
+	button_anim_fadein(nodes[6], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 4
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 2 to wallpaper 3
+function circle_wallpaper2_3(obj, handle, elapsed)
+
+	button_anim_fadeout(nodes[4], wallpaper_animation_delay)
+	button_anim_fadein(nodes[5], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 3
+	circle_wallpaper()
+end
+
+-- Circle from wallpaper 1 to wallpaper 2
+function circle_wallpaper1_2(obj, handle, elapsed)
+	button_anim_fadeout(nodes[3], wallpaper_animation_delay)
+	button_anim_fadein(nodes[4], wallpaper_animation_delay, color_visible)
+	wallpaperactif = 2
+	circle_wallpaper()
+end
+
+-- Call every method to circle wallpapers
+function circle_wallpaper()
+	if hover_activated == 0 then
+		msg.post("mainmenu_menu", "activate_hover")
+		hover_activated = 1
+	end
+	
+	if wallpaperactif == 1 then
+		timer.delay(8, false, circle_wallpaper1_2)
+	end
+	if wallpaperactif == 2 then
+		timer.delay(8, false, circle_wallpaper2_3)
+	end
+	if wallpaperactif == 3 then
+		timer.delay(8, false, circle_wallpaper3_4)
+	end
+	if wallpaperactif == 4 then
+		timer.delay(8, false, circle_wallpaper4_5)
+	end
+	if wallpaperactif == 5 then
+		timer.delay(8, false, circle_wallpaper5_6)
+	end
+	if wallpaperactif == 6 then
+		timer.delay(8, false, circle_wallpaper6_1)
+	end
+end
+
+-- Set all nodes invisible
+function set_invisible(self)
+	for i = 1, #nodes do
+		gui.set_color(nodes[i], color_invisible)
+	end
+end
+
+-- Initiate all nodes when GUI is launched
+function initiate_nodes(self)
+	leftbar = gui.get_node("ui_leftbar")
+	nodes[1] = leftbar
+
+	shadeblack = gui.get_node("ui_shadeblack")
+	nodes[2] = shadeblack
+
+	background1 = gui.get_node("background1")
+	background2 = gui.get_node("background2")
+	background3 = gui.get_node("background3")
+	background4 = gui.get_node("background4")
+	background5 = gui.get_node("background5")
+	background6 = gui.get_node("background6")
+	nodes[3] = background1
+	nodes[4] = background2
+	nodes[5] = background3
+	nodes[6] = background4
+	nodes[7] = background5
+	nodes[8] = background6
+end
+
+-- Get colors
+function get_colors(self)
+	leftbar_color = gui.get_color(nodes[1])
+	shadeblack_color = gui.get_color(nodes[2])
+end
+
+-- Get all nodes of GUI
+function get_nodes(self)
+	initiate_nodes()
+	get_colors()
+	set_invisible()
+end
+
+function init(self)
+	nodes = {}
+	wallpaperactif = 1
+	wallpaper_animation_delay = 0.5
+	hover_activated = 0
+	
+	get_nodes()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_mainmenu_background") then
+		button_anim_fadein(nodes[1], 0.5, leftbar_color)
+		button_anim_fadein(nodes[3], 1.5, color_visible)
+		
+		timer.delay(0.5, false, circle_wallpaper)
+	end
+
+	if message_id == hash("activate_shade") then
+		button_anim_fadein(shadeblack, 0, shadeblack_color)
+	end
+
+	if message_id == hash("deactivate_shade") then
+		button_anim_fadeout(shadeblack, 0)
+	end
+end

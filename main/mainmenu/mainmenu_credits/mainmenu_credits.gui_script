@@ -1,0 +1,83 @@
+local get_nodes
+local initiate_nodes
+local set_invisible
+local button_launch_credits
+local button_quit_credits
+local get_colors
+
+local nodes
+
+-- Launch of credits 
+function launch_credits(self)
+	button_anim_fadein(nodes[1], 0, color_visible)
+	button_anim_fadein(nodes[2], 0, credits1_color)
+	button_anim_fadein(nodes[3], 0, color_visible)
+end
+
+-- Close of credits
+function quit_credits(self)
+	button_anim_fadeout(nodes[1], 0)
+	button_anim_fadeout(nodes[2], 0)
+	button_anim_fadeout(nodes[3], 0)
+end
+
+-- Get color of nodes
+function get_colors(self)
+	credits1_color = gui.get_color(text_credits1)
+end
+
+-- Set all nodes invisible
+function set_invisible(self)
+
+	for i = 1,#nodes do
+		gui.set_color(nodes[i], color_invisible)
+	end
+end
+
+-- Get all nodes
+function get_nodes(self)
+	logo_credits = gui.get_node("logo_credits_novensstudio")
+	text_credits1 = gui.get_node("text_credits_text_blue")
+	text_credits2 = gui.get_node("text_credits_text")
+
+	nodes[1] = logo_credits
+	nodes[2] = text_credits1
+	nodes[3] = text_credits2
+end
+
+function initiate_nodes(self)
+	get_nodes()
+	get_colors()
+	set_invisible()
+	
+end
+
+function init(self)
+	nodes = {}
+	initiate_nodes()
+end
+
+-- On message received
+function on_message(self, message_id, message, sender)
+	if message_id == hash("show_mainmenu_credits") then
+		msg.post("mainmenu_background", "activate_shade")
+		launch_credits()
+	end
+
+	if message_id == hash("hide_mainmenu_credits") then
+		msg.post("mainmenu_background", "deactivate_shade")
+		quit_credits()
+	end
+end
+
+function final(self)
+end
+
+function update(self, dt)
+end
+
+function on_input(self, action_id, action)
+end
+
+function on_reload(self)
+end

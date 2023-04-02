@@ -1,0 +1,76 @@
+local get_nodes
+local get_colors
+local set_invisible
+
+-- Hide the novensstudio logo
+function anim2_novensstudio(self, node)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, 3)
+end
+
+-- Show the novensstudio logo
+function anim1_novensstudio(node, d)
+	gui.animate(node, gui.PROP_COLOR, color_visible, gui.EASING_OUTQUAD, 0.5, d, anim2_novensstudio)
+end
+
+-- Hide the defold logo
+function anim2_defold_logo(self, node)
+	gui.animate(node, gui.PROP_COLOR, color_invisible, gui.EASING_OUTQUAD, 0.5, 2)
+end
+
+-- Show the defold logo
+function anim1_defold_logo(node, d, d2)
+	gui.animate(node, gui.PROP_COLOR, color_visible, gui.EASING_OUTQUAD, 0.5, d, anim2_defold_logo)
+end
+
+function get_nodes(self)
+	novensstudio = gui.get_node("logo_novensstudio")
+	defold = gui.get_node("logo_defold")
+	background = gui.get_node("background_black")
+end
+
+function get_colors(self)
+	novensstudio_color = gui.get_color(novensstudio)
+	defold_color = gui.get_color(defold)
+end
+
+function set_invisible(self)
+	gui.set_color(novensstudio, color_invisible)
+	gui.set_color(defold, color_invisible)
+end
+
+function init(self)
+
+	get_nodes()
+	get_colors()
+	set_invisible()
+
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("activate_intro") then
+		anim1_novensstudio(novensstudio, 1)
+		anim1_defold_logo(defold, 2)
+	end
+
+	if message_id == hash("clear_background") then
+	
+		gui.set_visible(background, false)
+		gui.set_visible(novensstudio, false)
+		gui.set_visible(defold, false)
+		--gui.set_visible(background, false)
+		gui.set_enabled(novensstudio, false)
+		gui.set_enabled(defold, false)
+	end
+end
+
+function final(self)
+end
+
+function update(self, dt)
+end
+
+function on_input(self, action_id, action)
+end
+
+function on_reload(self)
+end

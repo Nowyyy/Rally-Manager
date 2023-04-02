@@ -1,4 +1,4 @@
-script: "/assets/templates/button.gui_script"
+script: "/assets/templates/Button/button.gui_script"
 fonts {
   name: "font_mainmenu_clean"
   font: "/assets/fonts/font_mainmenu_clean.font"
@@ -11,7 +11,7 @@ background_color {
 }
 nodes {
   position {
-    x: 130.0
+    x: 140.0
     y: 650.0
     z: 0.0
     w: 1.0
@@ -64,11 +64,11 @@ nodes {
   size_mode: SIZE_MODE_MANUAL
   custom_type: 0
   enabled: true
-  visible: true
+  visible: false
 }
 nodes {
   position {
-    x: 130.0
+    x: 140.0
     y: 650.0
     z: 0.0
     w: 1.0

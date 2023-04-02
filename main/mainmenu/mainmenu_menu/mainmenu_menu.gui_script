@@ -1,0 +1,258 @@
+local get_nodes
+local get_colors
+local set_invisible
+local set_hover_size
+local initiate_nodes
+local play_logic
+local options_logic
+local credits_logic
+local quit_logic
+
+local nodes
+local credits_on
+local hover_activated
+
+-- Get all nodes of GUI
+function get_nodes(self)
+
+	-- Initiate table
+	for i = 1, 5 do
+		nodes[i] = {}
+	end
+	
+	-- Create nodes
+	title = gui.get_node("text_title")
+	version = gui.get_node("text_version")
+	nodes[1][1] = title
+	nodes[1][2] = version
+	
+	play_text = gui.get_node("button_menu_play/text")
+	play_hover = gui.get_node("button_menu_play/hover")
+	nodes[2][1] = play_text
+	nodes[2][2] = play_hover
+	
+	options_text = gui.get_node("button_menu_options/text")
+	options_hover = gui.get_node("button_menu_options/hover")
+	nodes[3][1] = options_text
+	nodes[3][2] = options_hover
+
+	credits_text = gui.get_node("button_menu_credits/text")
+	credits_hover = gui.get_node("button_menu_credits/hover")
+	nodes[4][1] = credits_text
+	nodes[4][2] = credits_hover
+
+	quit_text = gui.get_node("button_menu_quit/text")
+	quit_hover = gui.get_node("button_menu_quit/hover")
+	nodes[5][1] = quit_text
+	nodes[5][2] = quit_hover
+	
+end
+
+-- Get colors
+function get_colors(self)
+	color_hover = gui.get_color(play_hover)
+end
+
+-- Set all nodes invisible
+function set_invisible(self)
+
+	for i = 1,#nodes do
+		for j = 1,2 do
+			gui.set_color(nodes[i][j], color_invisible)
+		end
+	end
+end
+
+-- Set hovers size depending on text
+function set_hover_size(text, hover)
+	local metrics = gui.get_text_metrics_from_node(text)
+	local positions = gui.get_position(text)
+	positions.x = positions.x - 10
+
+	gui.set_size(hover, vmath.vector4(metrics.width+20, metrics.height, 0, 0))
+	gui.set_position(hover, positions)
+end
+
+-- Initiate all nodes when GUI is launched
+function initiate_nodes(self)
+	get_nodes()
+	get_colors()
+	set_invisible()
+
+	for i = 2,#nodes do
+		set_hover_size(nodes[i][1], nodes[i][2])
+	end
+end
+
+--Create menu
+function init(self)
+	msg.post(".", "acquire_input_focus")
+
+	nodes = {}
+	credits_on = 0
+	hover_activated = 0
+
+	play_on = 0
+	options_on = 0
+	credits_on = 0
+	quit_on = 0
+	
+	initiate_nodes()
+end
+
+-- Execute messages
+function on_message(self, message_id, message, sender)
+	-- Animate menu 
+	if message_id == hash("show_mainmenu_menu") then
+		msg.post("mainmenu_intro", "clear_background")
+		
+		for i = 1,#nodes do
+			if i == 1 then
+				button_anim_fadein(nodes[i][2], 0.5, color_visible)
+			end
+			button_anim_fadein(nodes[i][1], 0.5, color_visible)
+		end
+	end	
+
+	if message_id == hash("activate_hover") then
+		hover_activated = 1
+	end
+end
+
+-- On mouse input
+function on_input(self, action_id, action)
+
+	-- Activate hover
+	if action_id == nil and hover_activated == 1 then
+		-- Button play
+		if gui.pick_node(play_text, action.x, action.y) then
+			gui.set_color(play_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(play_hover, color_invisible)
+		end
+
+		-- Button options
+		if gui.pick_node(options_text, action.x, action.y) then
+			gui.set_color(options_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(options_hover, color_invisible)
+		end
+
+		-- Button credits
+		if gui.pick_node(credits_text, action.x, action.y) then
+			gui.set_color(credits_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(credits_hover, color_invisible)
+		end
+
+		-- Button quit
+		if gui.pick_node(quit_text, action.x, action.y) then
+			gui.set_color(quit_hover, vmath.vector4(color_hover))
+		else
+			gui.set_color(quit_hover, color_invisible)
+		end
+	end
+
+	-- All actions on click
+	if(action_id == hash("touch") and action.pressed == true and hover_activated == 1) then
+		sound.play("mainmenu#sound_mainmenu_click",  {delay = 0})
+		-- Button play
+		if(gui.pick_node(play_hover,action.x,action.y)) then
+			play_logic()
+		end
+
+		-- Button options
+		if(gui.pick_node(options_hover,action.x,action.y)) then
+			options_logic()
+		end
+
+		-- Button credits
+		if(gui.pick_node(credits_hover,action.x,action.y)) then
+			credits_logic()
+		end
+		
+	-- Button quit
+		if(gui.pick_node(quit_hover,action.x,action.y)) then
+			quit_logic()
+		end
+	end
+end
+
+-- play button logic
+function play_logic(self)
+
+	if credits_on == 1 then
+		msg.post("mainmenu_credits", "hide_mainmenu_credits")
+		credits_on = 0
+	end
+
+	if options_on == 1 then
+		msg.post("mainmenu_options", "hide_mainmenu_options")
+		options_on = 0
+	end
+
+	if play_on == 0 then
+		msg.post("mainmenu_play", "show_mainmenu_play")
+		play_on = 1
+	else
+		msg.post("mainmenu_play", "hide_mainmenu_play")
+		play_on = 0
+	end
+end
+
+-- options button logic
+function options_logic(self)
+
+	if credits_on == 1 then
+		msg.post("mainmenu_credits", "hide_mainmenu_credits")
+		credits_on = 0
+	end
+
+	if play_on == 1 then
+		msg.post("mainmenu_play", "hide_mainmenu_play")
+		play_on = 0
+	end
+
+	if options_on == 0 then
+		msg.post("mainmenu_options", "show_mainmenu_options")
+		options_on = 1
+	else
+		msg.post("mainmenu_options", "hide_mainmenu_options")
+		options_on = 0
+	end	
+end
+
+-- credits button logic
+function credits_logic(self)
+	if options_on == 1 then
+		msg.post("mainmenu_options", "hide_mainmenu_options")
+		options_on = 0
+	end
+
+	if play_on == 1 then
+		msg.post("mainmenu_play", "hide_mainmenu_play")
+		play_on = 0
+	end
+
+	if credits_on == 0 then
+		msg.post("mainmenu_credits", "show_mainmenu_credits")
+		credits_on = 1
+	else
+		msg.post("mainmenu_credits", "hide_mainmenu_credits")
+		credits_on = 0
+	end
+end
+
+-- Quit button logic
+function quit_logic(self)
+	msg.post("@system:", "exit", {code = 0})
+end
+
+function final(self)
+end
+
+function update(self, dt)
+end
+
+function on_reload(self)
+end

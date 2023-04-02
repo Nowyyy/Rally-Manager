@@ -1,4 +1,4 @@
-script: "/main/mainmenu/scripts/mainmenu.gui_script"
+script: "/main/mainmenu/mainmenu_play/mainmenu_play.gui_script"
 fonts {
   name: "font_mainmenu_clean"
   font: "/assets/fonts/font_mainmenu_clean.font"
