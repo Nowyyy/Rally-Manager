@@ -263,7 +263,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 100.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -302,6 +302,7 @@ nodes {
   alpha: 1.0
   outline_alpha: 1.0
   shadow_alpha: 1.0
+  overridden_fields: 4
   overridden_fields: 8
   overridden_fields: 46
   template_node_child: true
@@ -431,7 +432,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 180.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -444,7 +445,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "OPTIONS\n"
+  text: "SETTINGS\n"
   ""
   font: "font_mainmenu_clean"
   id: "button_menu_options/text"
@@ -472,6 +473,7 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 1
+  overridden_fields: 4
   overridden_fields: 8
   overridden_fields: 46
   template_node_child: true
@@ -601,7 +603,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 155.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -642,6 +644,7 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 1
+  overridden_fields: 4
   overridden_fields: 8
   overridden_fields: 46
   template_node_child: true
@@ -771,7 +774,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
+    x: 85.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -811,6 +814,7 @@ nodes {
   outline_alpha: 1.0
   shadow_alpha: 1.0
   overridden_fields: 1
+  overridden_fields: 4
   overridden_fields: 8
   overridden_fields: 46
   template_node_child: true

@@ -11,6 +11,37 @@ local hover_activated
 local fade_in_shade_background
 local fade_out_shade_background
 local change_image_resolution
+local move_background
+local get_node_position
+
+local background_posx
+local background_posy
+local nodes_positions
+
+-- Get the original coordinates of the node position
+function get_node_position()
+
+	nodes_positions = {}
+	for i = 1, 6 do
+		nodes_positions[i] = {}
+	end
+
+	for i =1, 6 do
+		nodes_positions[i][1] = gui.get_position(nodes[i+2]).x
+		nodes_positions[i][2] = gui.get_position(nodes[i+2]).y
+	end
+end
+
+-- Move background slowly
+function move_background(node, index)
+	gui.animate(node, "position", vmath.vector3(nodes_positions[index][1]+50, nodes_positions[index][2]+80, 0), gui.EASING_LINEAR, 8.5)
+	--gui.set_position(node, vmath.vector3(nodes_positions[index][1]+50, nodes_positions[index][2]+80, 0))
+end
+
+-- Restore the background to it's initial position
+function restore_background(node, index)
+	gui.set_position(node, vmath.vector3(nodes_positions[index][1], nodes_positions[index][2], 0))
+end
 
 -- Fade out the shade of background
 function fade_out_shade_background()
@@ -79,21 +110,33 @@ function circle_wallpaper()
 	end
 	
 	if wallpaperactif == 1 then
+		move_background(nodes[3], 1)
+		restore_background(nodes[7], 5)
 		timer.delay(8, false, circle_wallpaper1_2)
 	end
 	if wallpaperactif == 2 then
+		move_background(nodes[4], 2)
+		restore_background(nodes[8], 6)
 		timer.delay(8, false, circle_wallpaper2_3)
 	end
 	if wallpaperactif == 3 then
+		move_background(nodes[5], 3)
+		restore_background(nodes[3], 1)
 		timer.delay(8, false, circle_wallpaper3_4)
 	end
 	if wallpaperactif == 4 then
+		move_background(nodes[6], 4)
+		restore_background(nodes[4], 2)
 		timer.delay(8, false, circle_wallpaper4_5)
 	end
 	if wallpaperactif == 5 then
+		move_background(nodes[7], 5)
+		restore_background(nodes[5], 3)
 		timer.delay(8, false, circle_wallpaper5_6)
 	end
 	if wallpaperactif == 6 then
+		move_background(nodes[8], 6)
+		restore_background(nodes[7], 5)
 		timer.delay(8, false, circle_wallpaper6_1)
 	end
 end
@@ -147,6 +190,8 @@ function init(self)
 	hover_activated = 0
 	
 	get_nodes()
+
+	get_node_position(nodes[3])
 end
 
 function on_message(self, message_id, message, sender)

@@ -23,6 +23,7 @@ function get_nodes(self)
 	-- Create nodes
 	title = gui.get_node("text_title")
 	version = gui.get_node("text_version")
+	gui.set_text(version, current_version)
 	nodes[1][1] = title
 	nodes[1][2] = version
 	
